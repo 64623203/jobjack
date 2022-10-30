@@ -1,0 +1,66 @@
+<div class="container-fluid">
+  <cdk-virtual-scroll-viewport [itemSize]="47">
+    <table class="table table-responsive table-striped table-bordered border border-seconday rounded">
+      <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col">Path</th>
+        <th scope="col">Extension</th>
+        <th scope="col">Permissions</th>
+        <th scope="col">Size</th>
+        <th scope="col">Creation Date</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr (click)="goBack()"
+          *ngIf="currentPath && currentPath !== '/'"
+          class="table-secondary click">
+        <th colspan="12"
+            scope="row">
+          ..
+        </th>
+      </tr>
+      <ng-container *ngIf="currentDirectoryList.length">
+        <tr (click)="goToDirectory(item)"
+            *cdkVirtualFor="let item of currentDirectoryList"
+            [ngClass]="{'table-hover table-primary click': item.directory, 'table-light': !item.directory}"
+            class="text-truncate">
+          <td>
+            <fa-icon [icon]="item.directory ? faFolder : faFile"></fa-icon>
+          </td>
+          <th [title]="item.name"
+              scope="row">
+            <span class="d-inline-block text-truncate"
+                  style="max-width: 150px;">
+              {{ item.name }}
+            </span>
+          </th>
+          <td [title]="item.path"
+              class="text-truncate">
+            <span class="d-inline-block text-truncate"
+                  style="max-width: 150px;">
+              {{ item.path }}
+            </span>
+          </td>
+          <td>{{ item.extension || '-' }}</td>
+          <td>{{ item.permissions }}</td>
+          <td>{{ item.size }}</td>
+          <td>{{ item.createdAt }}</td>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="!currentDirectoryList.length">
+        <tr>
+          <td colspan="12">
+            <div class="alert alert-secondary"
+                 role="alert">
+              The directory is empty
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </cdk-virtual-scroll-viewport>
+</div>
+
